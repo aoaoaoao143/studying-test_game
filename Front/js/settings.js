@@ -134,7 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         icon.addEventListener('click', () => {
             const idx = Number(icon.dataset.index);
-            if (idx >= selectedCount) selectedCount = idx; // 2人以上選択
+            if (idx >= gameInfo.minPlayers) selectedCount = idx; // 2人以上選択
             updateSelectedIcons();
         });
     });
