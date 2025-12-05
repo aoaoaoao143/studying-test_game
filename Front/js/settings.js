@@ -69,7 +69,7 @@ const gameData = {
 // -----------------------------------------------------------
 // URLパラメータからゲームIDを取得
 const url = new URL(window.location.href);
-const gameID = url.searchParams.get("game") || "hogehoge"; // デフォルトはhogehoge
+const gameID = url.searchParams.get("game") ; // 「|| "hogehoge"」デフォルトはhogehogeの予定
 
 const gameInfo = gameData[gameID];
 
