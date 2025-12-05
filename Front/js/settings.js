@@ -59,7 +59,7 @@ const gameData = {
         //賭けあり
         betting: 1,
         // - - - - - - - - - - - - - - - - - - - -
-        minPlayers: 3,
+        minPlayers: 2,
         maxPlayers: 6
     }
     // -----------------------------------------------------------
@@ -113,7 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
     icons[0].classList.add("fixed");
 
     // 初期状態で2人目を選択済みにしておく
-    selectedCount = gameInfo.minPlayers;
+    selectedCount = 2;
     updateSelectedIcons();
 
     // マウスイベントとクリックで人数選択
@@ -134,7 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         icon.addEventListener('click', () => {
             const idx = Number(icon.dataset.index);
-            if (idx >= gameInfo.minPlayers) selectedCount = idx; // 2人以上選択
+            if (idx >= 2) selectedCount = idx; // 2人以上選択
             updateSelectedIcons();
         });
     });
