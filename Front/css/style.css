@@ -69,7 +69,7 @@ body {
 /* メイン設定 */
 .main {
     /*ルールボックス外側余白 上下0 左右80*/
-    margin: 20px 5%;
+    margin: 25px 5%;
 }
 
 .main-title {
@@ -102,16 +102,8 @@ body {
     gap: 16px;
 }
 
-/* 画面幅が指定以上なら2列にする */
-@media (min-width: 1000px) {
-    .grid-container {
-        /* 2列 */
-        grid-template-columns: 1fr 1fr;
-    }
-}
-
 .shousai {
-    margin: 40px 0px;
+    margin-bottom: 20px;
     padding: 5px 30px;
 
     height: auto;
@@ -127,6 +119,14 @@ body {
 
 .shousai-img {
     padding-bottom: 20px;
+}
+
+/* 画面幅が指定以上なら2列にする */
+@media (min-width: 1000px) {
+    .grid-container {
+        /* 2列 */
+        grid-template-columns: 450px 1fr;
+    }
 }
 
 .hidden {
@@ -365,6 +365,47 @@ body {
     margin-top: 10px;
     /* font-weight: bold; */
     font-size: 18px;
+}
+
+/*--------------------------------------------------------------------------*/
+/* タブレット用 */
+@media (max-width: 700px) {
+    .header-title {
+        font-size: 24px;
+    }
+
+    .main-title {
+        font-size: 22px;
+    }
+
+    .rule-title {
+        font-size: 22px;
+    }
+
+    .shousai {
+        margin-bottom: 10px 0px;
+        padding: 5px 20px;
+    }
+}
+
+/*--------------------------------------------------------------------------*/
+/* スマホ用（小さい画面） */
+@media (max-width: 450px) {
+    .header-title {
+        font-size: 20px;
+    }
+
+    .main-title {
+        font-size: 18px;
+    }
+
+    .rule-title {
+        font-size: 18px;
+    }
+
+    .shousai {
+        padding: 5px 15px;
+    }
 }
 
 /*--------------------------------------------------------------------------*/
