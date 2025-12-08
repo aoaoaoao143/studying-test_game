@@ -69,7 +69,7 @@ body {
 /* メイン設定 */
 .main {
     /*ルールボックス外側余白 上下0 左右80*/
-    margin: 0px 80px;
+    margin: 20px 5%;
 }
 
 .main-title {
@@ -174,8 +174,8 @@ body {
     display: grid;
     /* 横3列 */
     grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-    padding: 40px;
+    gap: 2%;
+    padding: 10px;
     /* 各列の中央寄せ */
     justify-items: center;
 }
@@ -185,8 +185,8 @@ body {
     display: grid;
     /* 横3列 */
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    padding: 40px;
+    gap: 0%;
+    padding: 10px;
     /* 各列の中央寄せ */
     justify-items: center;
 }
@@ -246,37 +246,34 @@ body {
     font-size: 14px;
 }
 
-/* 「確認する」のボタンデザイン */
-.detail-mode {
-    /* background-color: rgba(0, 0, 0, 0.25); */
-    background-color: #ecc467;
-    color: white;
-
-}
-
-/* .transparent-text {
-    -webkit-background-clip: text;
-    color: transparent;
-} */
-
-/* 「閉じる」のボタンデザイン */
-.close-mode {
-    background-color: #4a80b3;
-    color: white;
-}
-
 /*--------------------------------------------------------------------------*/
 /* プレイヤー人数指定の画像の設定 */
 .player-select {
     display: flex;
     justify-content: center;
-    gap: 12px;
+    gap: 1%;
     margin: 5px auto;
 }
 
 .player-icon {
-    width: 80px;
+    /* width: 80px; */
+    cursor: pointer;
+    width: 15%;
+    padding: 0;
+    border: none;
+    background: none;
     transition: transform 0.15s;
+}
+
+.player-icon img {
+    /* 親 (button) の幅に合わせて縮む */
+    width: 100%;
+    /* 縦横比を保つ */
+    height: auto;
+    /* 余計な隙間を消す */
+    display: block;
+    /* 角を丸くしない（デフォルト0） */
+    border-radius: 0;
 }
 
 /*--------------------------------------------------------------------------*/
@@ -284,15 +281,27 @@ body {
 .coin-select-area {
     display: flex;
     justify-content: center;
-    gap: 50px;
+    gap: 5%;
     margin-top: 20px;
 }
 
 .coin {
-    width: 70px;
+    width: 15%;
     cursor: pointer;
+    /* 透明度4割 */
     opacity: 0.4;
     transition: opacity 0.2s, transform 0.2s;
+}
+
+.coin img {
+    /* 親 (button) の幅に合わせて縮む */
+    width: 100%;
+    /* 縦横比を保つ */
+    height: auto;
+    /* 余計な隙間を消す */
+    display: block;
+    /* 角を丸くしない（デフォルト0） */
+    border-radius: 0;
 }
 
 .coin:hover {
@@ -300,6 +309,7 @@ body {
 }
 
 .coin.selected {
+    /* 透明度無し */
     opacity: 1;
 }
 
