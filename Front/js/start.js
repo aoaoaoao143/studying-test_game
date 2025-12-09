@@ -22,3 +22,16 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 });
+
+// const btn = document.getElementById("startBtn");
+// const img = document.getElementById("startImg");
+
+// btn.addEventListener("click", () => {
+//     // まず hover画像に切り替え
+//     img.src = "../img/button01_TrumpGame_hover.png";
+
+//     // 1秒維持してから遷移
+//     setTimeout(() => {
+//         window.location.href = "next.html";
+//     }, 3000);
+// });

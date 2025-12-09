@@ -60,7 +60,7 @@ const gameData = {
         betting: 1,
         // - - - - - - - - - - - - - - - - - - - -
         minPlayers: 2,
-        maxPlayers: 6
+        maxPlayers: 7
     }
     // -----------------------------------------------------------
 };
@@ -69,7 +69,7 @@ const gameData = {
 // -----------------------------------------------------------
 // URLパラメータからゲームIDを取得
 const url = new URL(window.location.href);
-const gameID = url.searchParams.get("game") ; // 「|| "hogehoge"」デフォルトはhogehogeの予定
+const gameID = url.searchParams.get("game"); // 「 || "hogehoge"」デフォルトはhogehoge
 
 const gameInfo = gameData[gameID];
 
@@ -102,36 +102,62 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 // -----参加人数の設定-----
+
 document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("minPlayersValue").textContent = `参加人数を指定してください。　※ 最低参加人数：${gameInfo.minPlayers}人`;
+    document.getElementById("minPlayersValue").innerHTML = `ゲームに必要な人数：${gameInfo.minPlayers}人〜`;
     // 人数選択UI
     const icons = document.querySelectorAll('.player-icon');
     let selectedCount = gameInfo.minPlayers; // 最低人数は固定
 
-    // 1人目は自分固定
-    icons[0].src = "../img/player_you.png";
-    icons[0].classList.add("fixed");
+    icons.forEach(icon => {
+        const idx = Number(icon.dataset.index);
+        if (idx > gameInfo.maxPlayers) {
+            icon.style.display = "none";
+        }
+    });
 
-    // 初期状態で2人目を選択済みにしておく
-    selectedCount = 2;
+    // 1人目はplayer_youで固定
+    icons[0].src = "../img/player_you.png";
+
+    for (let i = 0; i < gameInfo.minPlayers; i++) {
+        icons[i].classList.add("minPlayer");
+    }
+
     updateSelectedIcons();
 
     // マウスイベントとクリックで人数選択
+    /*
+    取得した全アイコンに対してループし、イベント（mouseover, mouseout, click）を登録している。*/
     icons.forEach(icon => {
 
+        /*
+        ホバーしたアイコンの data-index 属性を読み取り（文字列 → 数値化）して、
+        その位置までを仮にハイライト表示する処理を開始する。*/
         icon.addEventListener('mouseover', () => {
             const idx = Number(icon.dataset.index);
+            /*
+            各アイコンに対して、ホバーした位置 idx と比較して、
+            画像を player_hover.png （ハイライト）か player.png （通常）に切り替える。
+            これでマウスを動かしたときに「ここまで選べるよ」という視覚効果が出る。*/
             icons.forEach(i => {
                 const iIdx = Number(i.dataset.index);
+                /*
+                この行で「1人目は自分なので変更しない」というガードをかけている。
+                1人目は固定画像（player_you.png）のまま。*/
                 if (iIdx === 1) return; // 自分は固定
+                if (i.style.display === "none") return; // ← 非表示は対象外
                 i.src = (iIdx <= idx) ? "../img/player_hover.png" : "../img/player.png";
             });
         });
 
+        /*
+        マウスが外れたら「仮表示」を消して、実際に確定している選択状態に戻す。*/
         icon.addEventListener('mouseout', () => {
             updateSelectedIcons();
         });
 
+        /*
+        クリックで selectedCount を更新（ただし最低 2 人に制限）。その後画面反映関数を呼ぶ。*/
         icon.addEventListener('click', () => {
             const idx = Number(icon.dataset.index);
             if (idx >= 2) selectedCount = idx; // 2人以上選択
@@ -139,8 +165,12 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+    /*
+    実際にアイコン群をループして src を選択状態に合わせて書き換える。
+    最後に selectedValue 要素に選択人数を表示する。*/
     function updateSelectedIcons() {
         icons.forEach(i => {
+            if (i.style.display === "none") return; // ← 非表示は対象外
             const idx = Number(i.dataset.index);
             if (idx === 1) {
                 i.src = "../img/player_you.png";
@@ -150,6 +180,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 i.src = "../img/player.png";
             }
         });
+        /*画面のテキストに現在の人数を反映。test_参加人数： というプレフィックスが付いてるのはデバッグ表示っぽい。*/
         document.getElementById('selectedValue').textContent = `test_参加人数：${selectedCount}人`;
     }
 });
