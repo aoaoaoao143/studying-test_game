@@ -4,7 +4,7 @@ const gameData = {
     // -----------------------------------------------------------
     // ホゲホゲ
     hogehoge: {
-        title: "ゲーム読み取り不可",
+        title: "エラー",
         // - - - - - - - - - - - - - - - - - - - -
         rule: `<p>バグってる。どんまい。</p>`,
         // - - - - - - - - - - - - - - - - - - - -
@@ -60,7 +60,7 @@ const gameData = {
         betting: 1,
         // - - - - - - - - - - - - - - - - - - - -
         minPlayers: 2,
-        maxPlayers: 7
+        maxPlayers: 4
     }
     // -----------------------------------------------------------
 };
@@ -69,7 +69,7 @@ const gameData = {
 // -----------------------------------------------------------
 // URLパラメータからゲームIDを取得
 const url = new URL(window.location.href);
-const gameID = url.searchParams.get("game"); // 「 || "hogehoge"」デフォルトはhogehoge
+const gameID = url.searchParams.get("game") || "hogehoge"; //  デフォルトはhogehoge
 
 const gameInfo = gameData[gameID];
 
@@ -102,25 +102,40 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 // -----参加人数の設定-----
-
 document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("minPlayersValue").innerHTML = `ゲームに必要な人数：${gameInfo.minPlayers}人〜`;
     // 人数選択UI
     const icons = document.querySelectorAll('.player-icon');
-    let selectedCount = gameInfo.minPlayers; // 最低人数は固定
+    const minP = gameInfo.minPlayers;
+    const maxP = gameInfo.maxPlayers;
+    let selectedCount = minP; // 最低人数は固定
 
-    icons.forEach(icon => {
-        const idx = Number(icon.dataset.index);
-        if (idx > gameInfo.maxPlayers) {
+    // 最大プレイヤー数が0はhogehogeの設定のみのため
+    if (maxP === 0) {
+        icons.forEach(icon => {
             icon.style.display = "none";
+        });
+        document.getElementById("minPlayersValue").innerHTML = `エラーが発生したため選択できません`;
+    } else {
+        icons[0].src = "../img/player_you.png";
+
+        for (let i = 0; i < minP; i++) {
+            if (i === 0) {
+                icons[i].classList.add("player-you");
+            } else if (i === minP - 1) {
+                icons[i].classList.add("minPlayer");
+            } else {
+                icons[i].classList.add("minOfPlayer");
+            }
+
         }
-    });
 
-    // 1人目はplayer_youで固定
-    icons[0].src = "../img/player_you.png";
-
-    for (let i = 0; i < gameInfo.minPlayers; i++) {
-        icons[i].classList.add("minPlayer");
+        icons.forEach(icon => {
+            const idx = Number(icon.dataset.index);
+            if (idx > maxP) {
+                icon.style.display = "none";
+            }
+        });
+        document.getElementById("minPlayersValue").innerHTML = `ゲームに必要な人数：${gameInfo.minPlayers}人〜`;
     }
 
     updateSelectedIcons();
