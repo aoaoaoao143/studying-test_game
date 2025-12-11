@@ -184,7 +184,7 @@ body {
 }
 
 .shousai-img {
-    padding-bottom: 20px;
+    padding-bottom: 10px;
 }
 
 .grid-container {
@@ -195,7 +195,6 @@ body {
     justify-content: center;
 }
 
-/* 画面幅が指定以上なら2列にする */
 @media (max-width: 1000px) {
     .grid-container {
         grid-template-columns: repeat(1, 460px);
@@ -204,9 +203,28 @@ body {
 
 @media (max-width: 520px) {
     .grid-container {
-        grid-template-columns: repeat(1, 98%);
+        grid-template-columns: repeat(1, 99%);
     }
 }
+
+/* .grid-container {
+    display: grid;
+    gap: 20px;
+    margin: 0;
+    justify-content: center;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+} */
+
+/* .grid-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.grid-container>* {
+    flex: 1 1 350px;
+} */
 
 .hidden {
     max-height: 0;
@@ -218,7 +236,7 @@ body {
 /* ボタン配置2列 */
 .game-genre-button {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 350px);
     padding: 10px;
     justify-content: space-evenly;
     justify-items: center;
@@ -228,7 +246,7 @@ body {
 /* ボタン配置3列 */
 .game-type-button {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 270px);
     padding: 10px;
     justify-content: space-evenly;
     justify-items: center;
@@ -237,7 +255,7 @@ body {
 
 /*ボタン画像の指定*/
 .img-btn {
-    width: 270px;
+    width: 100%;
     padding: 0;
     border: none;
     background: none;
@@ -306,59 +324,64 @@ body {
 
 /*--------------------------------------------------------------------------*/
 /* ルール表示制御ボタン */
-.detail-btn {
+/* .detail-btn {
     margin-left: 10px;
     padding: 5px 12px;
     cursor: pointer;
     border-radius: 6px;
     border: none;
     font-size: 14px;
-}
+} */
 
 /*--------------------------------------------------------------------------*/
 /* プレイヤー人数指定の画像の設定 */
 .player-select {
-    display: flex;
+    display: grid;
     justify-content: start;
     gap: 0;
     margin: 5px auto;
+    grid-template-columns: repeat(6, 15%);
+    position: relative;
+    align-items: stretch;
 }
 
 .player-icon {
     cursor: pointer;
-    width: 11.2%;
-    padding: 3px;
+    /* aspect-ratio: 1 / 1; */
+    width: 100%;
+    max-width: 80px;
+    padding: 3px 0px;
     border: none;
     background: none;
     transition: transform 0.15s;
+    z-index: 1;
 }
 
-.player-you {
-    border-top-left-radius: 7.5px;
-    border-bottom-left-radius: 7.5px;
-    background-color: rgba(255, 255, 255, 0.2);
-
-}
-
-.minOfPlayer {
-    background-color: rgba(255, 255, 255, 0.2);
-}
-
-.minPlayer {
-    border-top-right-radius: 7.5px;
-    border-bottom-right-radius: 7.5px;
-    background-color: rgba(255, 255, 255, 0.2);
-}
-
-/* 親 (button) の幅に合わせて縮む */
+/* 
+    親 (button) の幅に合わせて縮む
+    縦横比を保つ
+    余計な隙間を消す
+    角を丸くしない（デフォルト0）
+ */
 .player-icon img {
     width: 100%;
-    /* 縦横比を保つ */
     height: auto;
-    /* 余計な隙間を消す */
     display: block;
-    /* 角を丸くしない（デフォルト0） */
     border-radius: 0;
+}
+
+#minAreaBg {
+    position: absolute;
+    grid-row: 1 / 2;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid white;
+    border-radius: 10px;
+    z-index: 0;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: calc(15% * var(--minP));
+    /* max-width: calc(80px * var(--minP)); */
 }
 
 /*--------------------------------------------------------------------------*/
