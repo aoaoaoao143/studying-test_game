@@ -118,8 +118,6 @@ if (gameID === "hogehoge") {
     // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
     // -----参加人数の設定-----
     document.addEventListener("DOMContentLoaded", () => {
-        // 最低人数の文言の表示
-        document.getElementById("minPlayersValue").innerHTML = `ゲームに必要な人数　：　${gameInfo.minPlayers}人〜`;
 
         // 【要修正】　ゲームに必要な人数分の背景色をつける
         updateMinArea();
@@ -206,8 +204,7 @@ if (gameID === "hogehoge") {
                     i.src = "../img/player.png";
                 }
             });
-            /*画面のテキストに現在の人数を反映。test_参加人数： というプレフィックスが付いてるのはデバッグ表示っぽい。*/
-            document.getElementById('selectedValue').textContent = `test_参加人数：${selectedCount}人`;
+            document.getElementById("minPlayersValue").innerHTML = `ゲームに必要な人数　：　${gameInfo.minPlayers}人〜　【${selectedCount}人選択中】`;
         }
     });
     // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
