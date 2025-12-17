@@ -51,8 +51,10 @@
             <div class="shousai">
                 <!-- ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ -->
                 <div class="main-title">参加人数の選択</div>
+                <div class="shousai-text">
+                    ゲームに必要な人数：<span id="minPlayersValue">ー</span>人〜<br />【<span id="choicePlayersValue">ー</span>人選択中】
+                </div>
                 <div class="shousai-img">
-                    <p id="minPlayersValue">ゲームに必要な人数　：　◯人〜　【◯人選択中】</p>
                     <div class="player-select">
                         <div id="minAreaBg"></div>
                         <!-- 1人目：あなた（固定） -->
@@ -70,43 +72,52 @@
                         <img src="../img/player.png" class="player-icon" data-index="11">
                         <img src="../img/player.png" class="player-icon" data-index="12">
                     </div>
+                    <!-- <p id="selectedValue">test_参加人数：◯人</p> -->
                 </div>
                 <!-- -------------------------------------------------------------- -->
                 <!-- ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ -->
-
                 <!-- チップ -->
                 <div class="main-title">チップの選択</div>
-                <!-- <div class="shousai shousai-img"> -->
-                <p>賭けに使用するチップを1つ選択してください。</p>
-                <div id="coin-selector" class="coin-select-area">
-                    <img src="../img/Coin_001.png" class="coin" data-value="1">
-                    <img src="../img/Coin_005.png" class="coin" data-value="5">
-                    <img src="../img/Coin_010.png" class="coin" data-value="10">
-                    <img src="../img/Coin_050.png" class="coin" data-value="50">
-                    <img src="../img/Coin_100.png" class="coin" data-value="100">
+                <div class="shousai-text">
+                    賭けに使用するチップを1つ選択してください。
+                    <br />【選択中：<span id="selecteCoinValue">ー</span>】
                 </div>
-                <p id="selecteCoinValue">test_コイン：0</p>
-                <!-- </div> -->
+                <div class="shousai-img">
+                    <div id="coin-selector" class="coin-select-area">
+                        <img src="../img/Coin_001.png" class="coin" data-value="1">
+                        <img src="../img/Coin_005.png" class="coin" data-value="5">
+                        <img src="../img/Coin_010.png" class="coin" data-value="10">
+                        <img src="../img/Coin_050.png" class="coin" data-value="50">
+                        <img src="../img/Coin_100.png" class="coin" data-value="100">
+                    </div>
+                </div>
 
                 <!-- 選択されたチップの値を受け取る場所 -->
-                <input type="hidden" id="selectedCoin" value="">
+                <input type="hidden" id="coinInput" min="1" max="100" step="1" value="1" />
 
-                <!-- -------------------------------------------------------------- -->
-                <!-- 手持ち金額 -->
+                <!-- ----------------------------------------------- -->
                 <div class="main-title">手持ち金額の指定</div>
-                <!-- <div class="shousai"> -->
-                <p>ゲーム開始時の所持金を指定してください。</p>
-                <div class="moneyH-container">
-                    <div class="moneyH-labels">
-                        <span id="moneyHMinLabel">10</span>
-                        <span id="moneyHMaxLabel">100</span>
-                    </div>
 
-                    <input type="range" id="amountMoneyH" min="10" max="1000" step="1" value="10">
-
-                    <div id="moneyHValueDisplay">選択値: 10</div>
+                <div class="shousai-text">
+                    ゲーム開始時の所持金を指定してください。<br />
+                    【金額：<span id="choiceCoinsValue">ー</span>】
                 </div>
-                <!-- </div> -->
+
+                <!-- コイン枚数選択画像 -->
+                <div class="coin-stacks-wrapper">
+                    <div class="coin-stacks" id="coinStacks"></div>
+                </div>
+
+                <div id="moneyHControl" class="money-control">
+                    <!-- ボタン[-] -->
+                    <button id="minusBtn" class="btnMinusPlus"><img src="../img/btn_minus.png" alt="-"></button>
+                    <!-- 選択中の枚数の表示 -->
+                    <span>選択枚数:<span id="moneyHValueDisplay">10</span></span>
+                    <!-- ボタン[+] -->
+                    <button id="plusBtn" class="btnMinusPlus"><img src="../img/btn_plus.png" alt="+"></button>
+                </div>
+
+                <!-- ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ -->
                 <!-- -------------------------------------------------------------- -->
                 <!-- 参加費 -->
                 <div class="main-title">参加費の指定</div>
