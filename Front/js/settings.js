@@ -49,11 +49,12 @@ const gameData = {
         // - - - - - - - - - - - - - - - - - - - -
         rule: `
 <p>カードが各プレイヤーに一枚ずつ配られます。<br/>
-自分のカードは見れませんが、他プレイヤーのカードは見えます。<br/>
-他プレイヤーからのヒントを参考に勝負するか決めるゲームです。<br/><br/>
+自分のカードは見れませんが、<br/>
+他プレイヤーのカードは見えます。<br/>
+他プレイヤーからのヒントを参考に勝負します。<br/><br/>
 <b>【カードの強さ】</b><br/>
 数字の中では　最弱：3　最強：2<br/>
-ただし、「JOKER」は「2」よりも強いが、「3」にだけ負ける。</p>
+ただし、「JOKER」は「2」よりも強いが、「3」には負けます。</p>
 <img src="../img/DiscImg_IndiP.png" alt="カード強さ表" style="width:100%; max-width:600px;">`,
         // - - - - - - - - - - - - - - - - - - - -
         //賭けあり
@@ -119,6 +120,7 @@ if (gameID === "hogehoge") {
     // -----参加人数の設定-----
     document.addEventListener("DOMContentLoaded", () => {
 
+        document.getElementById("minPlayersValue").textContent = `${minP}`;
         // 【要修正】　ゲームに必要な人数分の背景色をつける
         updateMinArea();
 
@@ -128,10 +130,10 @@ if (gameID === "hogehoge") {
         icons[0].src = "../img/player_you.png";
 
         // 最大参加人数以上のアイコンを非表示にする
-        icons.forEach(icon => {
-            const idx = Number(icon.dataset.index);
+        icons.forEach(i => {
+            const idx = Number(i.dataset.index);
             if (idx > maxP) {
-                icon.style.display = "none";
+                i.style.display = "none";
             }
         });
 
@@ -174,7 +176,8 @@ if (gameID === "hogehoge") {
             });
         });
 
-        // 【要修正】
+        // 【要 確認・修正】
+        //　最低参加人数の背景の設定
         function updateMinArea() {
             const icons = document.querySelectorAll('.player-icon');
             const bg = document.getElementById('minAreaBg');
@@ -189,9 +192,7 @@ if (gameID === "hogehoge") {
             bg.style.height = first.height + "px";
         }
 
-        /*
-        実際にアイコン群をループして src を選択状態に合わせて書き換える。
-        最後に selectedValue 要素に選択人数を表示する。*/
+        // 人数選択の切り替え
         function updateSelectedIcons() {
             icons.forEach(i => {
                 if (i.style.display === "none") return; // ← 非表示は対象外
@@ -204,81 +205,197 @@ if (gameID === "hogehoge") {
                     i.src = "../img/player.png";
                 }
             });
-            document.getElementById("minPlayersValue").innerHTML = `ゲームに必要な人数　：　${gameInfo.minPlayers}人〜　【${selectedCount}人選択中】`;
+            document.getElementById("choicePlayersValue").textContent = `${selectedCount}`;
         }
     });
-    // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-    // チップ制御
+    // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ コイン種類 ■■■■■■■■■■
+    // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 　設定値　 ■■■■■■■■■■
+    // 選択中コイン種類の表示
+    const selecteCoinValue = document.getElementById('selecteCoinValue');
+    // 
+    const coinInput = document.getElementById("coinInput");
+
+    const coin = document.querySelectorAll(".coin");
+    // ---------------------------------------------------------------------
+    // コイン種類（初期値：1）
+    let currentCoinValue = 1;
+
+    // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 　初期化　 ■■■■■■■■■■
+    // 選択中コインの種類の表示
+    selecteCoinValue.textContent = currentCoinValue;
+
+    coinInput.addEventListener("input", () => {
+        const value = Number(coinInput.value);
+        if (!COIN_IMAGES[value]) return;
+
+        currentCoinValue = value;
+        updateActiveCoinUI();
+        renderCoins();
+    });
+
+    // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ アクション ■■■■■■■■■■
     document.addEventListener("DOMContentLoaded", () => {
-        //
-        const moneyH = document.getElementById("amountMoneyH");
-        //
-        const moneyHValueDisplay = document.getElementById("moneyHValueDisplay");
-        const moneyHMinLabel = document.getElementById("moneyHMinLabel");
-        const moneyHMaxLabel = document.getElementById("moneyHMaxLabel");
-        const coins = document.querySelectorAll(".coin");
-        let selectedCoin = document.getElementById("selectedCoin");
+        updateActiveCoinUI();
+        renderCoins();
 
-        coins.forEach(coin => {
-            coin.addEventListener("click", () => {
+        coin.forEach(coinNum => {
+            coinNum.addEventListener("click", () => {
+                const value = Number(coinNum.dataset.value);
+                if (!COIN_IMAGES[value]) return;
 
-                // 全コイン画像の半透明
-                coins.forEach(c => c.classList.remove("selected"));
+                currentCoinValue = value;
 
-                // クリックしたコインを不透明化
-                coin.classList.add("selected");
-
-                selectedCoin = Number(coin.dataset.value);
-
-                document.getElementById('selecteCoinValue').textContent = `test_コイン：${selectedCoin}`;
-
-                // スライダー設定更新（10〜100）
-                const min = 10;
-                const max = 100;
-                moneyH.min = min;
-                moneyH.max = max;
-                moneyH.step = 1;
-                moneyH.value = min;
-
-                // スライダーの左右の表示を coin × min/max で更新
-                moneyHMinLabel.textContent = min * selectedCoin;
-                moneyHMaxLabel.textContent = max * selectedCoin;
-
-                updateSliderBackground();
-                updateSliderValue();
+                updateActiveCoinUI();
+                renderCoins();
+                renderValue();
             });
         });
     });
-    // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-    // スライダー値を coin の倍数に丸める
-    document.addEventListener("DOMContentLoaded", () => {
-        moneyH.addEventListener("input", () => {
 
-            let val = Math.round(moneyH.value / selectedCoin) * selectedCoin;
+    // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ コイン枚数 ■■■■■■■■■■
+    // コイン枚数選択画像の表示
+    const coinStacks = document.getElementById("coinStacks");
+    // 金額の表示
+    const choiceCoinsValue = document.getElementById("choiceCoinsValue");
+    // コイン選択枚数の表示
+    const moneyHValueDisplay = document.getElementById("moneyHValueDisplay");
+    // [-]ボタン
+    const minusBtn = document.getElementById("minusBtn");
+    // [+]ボタン
+    const plusBtn = document.getElementById("plusBtn");
 
-            moneyH.value = val;
+    // ---------------------------------------------------------------------
+    // コインに順番の割り振り
+    let globalIndex = 1;
+    // 横：5列
+    const columnCount = 5;
+    // 縦：20枚
+    const coinCount = 20;
+    // 最低コイン枚数：10枚
+    const minCoins = 10;
+    // 最大コイン枚数：100枚
+    const maxCoins = 100;
+    // コインの選択している枚数
+    let selectedCountCoins = minCoins;
 
-            updateSliderBackground();
-            updateSliderValue();
+    // コイン種類選択後、コイン枚数選択時の表示画像の識別
+    const COIN_IMAGES = {
+        1: "../img/StackCoins_001.png",
+        5: "../img/StackCoins_005.png",
+        10: "../img/StackCoins_010.png",
+        50: "../img/StackCoins_050.png",
+        100: "../img/StackCoins_100.png"
+    };
+
+    // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 　初期化　 ■■■■■■■■■■
+    coinStacks.innerHTML = "";
+    // ■ 横5列分繰り返し
+    for (let col = 0; col < columnCount; col++) {
+        const stack = document.createElement("div");
+        // css制御
+        stack.classList.add("coin-stack");
+
+        // ■ 横20枚分繰り返し
+        for (let i = 0; i < coinCount; i++) {
+            const img = document.createElement("img");
+            img.classList.add("numberOfCoins");
+            img.dataset.index = globalIndex;
+
+            img.src = globalIndex <= minCoins
+                ? getActiveCoinImage()
+                : (i === coinCount - 1
+                    ? "../img/StackCoins_000-top.png"
+                    : "../img/StackCoins_000.png");
+
+            img.style.bottom = `${i * 5.5}px`;
+            img.style.zIndex = i;
+
+            stack.appendChild(img);
+            globalIndex++;
+
+        }
+        coinStacks.appendChild(stack);
+    }
+
+    // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ アクション ■■■■■■■■■■
+    // コイン枚数画像
+    const numberOfCoins = document.querySelectorAll(".numberOfCoins");
+
+    renderCoins();
+    renderValue();
+
+    // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ イベント ■■■■■■■■■■
+    numberOfCoins.forEach(coinVal => {
+        coinVal.addEventListener("mouseover", () => {
+            const idx = Math.max(Number(coinVal.dataset.index), minCoins);
+            renderCoins(idx);
+            renderValue(idx);
         });
 
-        function updateSliderBackground() {
-            const percent = ((moneyH.value - moneyH.min) / (moneyH.max - moneyH.min)) * 100;
-            moneyH.style.backgroundSize = `${percent}% 100%`;
-        }
+        coinVal.addEventListener("mouseout", () => {
+            renderCoins();
+            renderValue();
+        });
 
-        function updateSliderValue() {
-            moneyHValueDisplay.textContent = `選択値: ${moneyH.value * selectedCoin}`;
-        }
-
-        // 初期化（最初のコインを自動選択）
-        coins[0].click();
-
-        document.addEventListener("DOMContentLoaded", () => {
-            const btn = document.getElementById("helloBtn");
-            btn.addEventListener("click", () => alert("こんにちは！"));
+        coinVal.addEventListener("click", () => {
+            selectedCountCoins = Math.max(Number(coinVal.dataset.index), minCoins);
+            renderCoins();
+            renderValue();
         });
     });
+
+    // ===== ボタン操作 =====
+    minusBtn.addEventListener("click", () => {
+        if (selectedCountCoins > minCoins) {
+            selectedCountCoins--;
+            renderCoins();
+            renderValue();
+        }
+    });
+
+    plusBtn.addEventListener("click", () => {
+        if (selectedCountCoins < maxCoins) {
+            selectedCountCoins++;
+            renderCoins();
+            renderValue();
+        }
+    });
+
+    // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ コイン関連 ■■■■■■■■■■
+    function getActiveCoinImage() {
+        return COIN_IMAGES[currentCoinValue];
+    }
+
+    function updateActiveCoinUI() {
+        coin.forEach(c => {
+            const value = Number(c.dataset.value);
+            c.classList.toggle("selected", value === currentCoinValue);
+        });
+
+        selecteCoinValue.textContent = currentCoinValue;
+    }
+
+    function renderCoins(tempValue = null) {
+        const value = tempValue ?? selectedCountCoins;
+        const activeImg = getActiveCoinImage();
+
+        numberOfCoins.forEach(coin => {
+            const idx = Number(coin.dataset.index);
+            coin.src = idx <= value
+                ? activeImg
+                : (0 === idx % 20
+                    ? "../img/StackCoins_000-top.png"
+                    : "../img/StackCoins_000.png");
+        });
+    }
+
+    function renderValue(value = selectedCountCoins) {
+        // 金額
+        choiceCoinsValue.textContent = value * currentCoinValue;
+        // コイン枚数
+        moneyHValueDisplay.textContent = `${value}`;
+    }
+    // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
     // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
     // ▼ ② 参加費チェック
     function validateEntry() {
