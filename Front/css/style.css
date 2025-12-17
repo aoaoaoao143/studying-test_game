@@ -187,6 +187,10 @@ body {
     padding-bottom: 10px;
 }
 
+.shousai-text {
+    font-size: 16px;
+}
+
 .grid-container {
     display: grid;
     grid-template-columns: 400px 550px;
@@ -198,6 +202,10 @@ body {
 @media (max-width: 1000px) {
     .grid-container {
         grid-template-columns: repeat(1, 460px);
+    }
+
+    .coin-stacks {
+        transform: scale(0.9);
     }
 }
 
@@ -385,7 +393,12 @@ body {
 }
 
 /*--------------------------------------------------------------------------*/
-/* チップ画像 */
+.coin-stacks-wrapper {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
 .coin-select-area {
     display: flex;
     justify-content: start;
@@ -402,13 +415,9 @@ body {
 }
 
 .coin img {
-    /* 親 (button) の幅に合わせて縮む */
     width: 100%;
-    /* 縦横比を保つ */
     height: auto;
-    /* 余計な隙間を消す */
     display: block;
-    /* 角を丸くしない（デフォルト0） */
     border-radius: 0;
 }
 
@@ -417,62 +426,60 @@ body {
 }
 
 .coin.selected {
-    /* 透明度無し */
     opacity: 1;
 }
 
-/*--------------------------------------------------------------------------*/
-/* スライド */
-.moneyH-container {
-    width: 80%;
-    margin: 40px auto;
+
+.coin-stacks {
+    display: flex;
+    grid-template-columns: repeat(5, 80px);
+    gap: 3px;
+    transform-origin: top left;
+}
+
+.coin-stack {
+    position: relative;
+    width: 80px;
+    height: 150px;
+}
+
+.numberOfCoins {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    pointer-events: auto;
+}
+
+.money-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
     text-align: center;
 }
 
-.moneyH-labels {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    /* font-weight: bold; */
-}
-
-#amountMoneyH {
-    width: 100%;
-    height: 10px;
-    /* なんか出てるけど、消しちゃダメ */
-    -webkit-appearance: none;
-    background: #ccc;
-    border-radius: 5px;
-    background-image: linear-gradient(#3ba39f, #3ba39f);
-    background-size: 0% 100%;
-    background-repeat: no-repeat;
-}
-
-#amountMoneyH::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: 2px solid #555;
-    background: white;
-    cursor: pointer;
-    margin-top: -5px;
-}
-
-#amountMoneyH::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: 2px solid #555;
-    background: white;
-    cursor: pointer;
-}
-
-#moneyHValueDisplay {
-    margin-top: 10px;
-    /* font-weight: bold; */
+.money-control button {
+    width: 28px;
+    height: 28px;
     font-size: 18px;
+    cursor: pointer;
+}
+
+/*--------------------------------------------------------------------------*/
+/* 足し引き調整ボタン */
+.btnMinusPlus {
+    width: 12px;
+    padding: 0;
+    border: none;
+    background: none;
+}
+
+/* 足し引き調整ボタン画像 */
+.btnMinusPlus img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 0;
 }
 
 /*--------------------------------------------------------------------------*/
@@ -498,7 +505,7 @@ body {
 }
 
 /*--------------------------------------------------------------------------*/
-/* スマホ用（小さい画面） */
+/* スマホ用 */
 @media (max-width: 450px) {
     .header-title {
         font-size: 20px;
