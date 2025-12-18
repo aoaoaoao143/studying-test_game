@@ -287,6 +287,11 @@ if (gameID === "hogehoge") {
         100: "../img/StackCoins_100.png"
     };
 
+    const SKELETON_COIN_IMAGES = {
+        0: "../img/StackCoins_000-top.png",
+        1: "../img/StackCoins_000-ten.png"
+    }
+
     // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 　初期化　 ■■■■■■■■■■
     coinStacks.innerHTML = "";
     // ■ 横5列分繰り返し
@@ -303,8 +308,8 @@ if (gameID === "hogehoge") {
 
             img.src = globalIndex <= minCoins
                 ? getActiveCoinImage()
-                : (i === coinCount - 1
-                    ? "../img/StackCoins_000-top.png"
+                : (0 === i % 10
+                    ? getSkeletonCoinImage(i)
                     : "../img/StackCoins_000.png");
 
             img.style.bottom = `${i * 5.5}px`;
@@ -366,6 +371,12 @@ if (gameID === "hogehoge") {
         return COIN_IMAGES[currentCoinValue];
     }
 
+    function getSkeletonCoinImage(num = i) {
+        let setNum = num / 10;
+        setNum = setNum % 2;
+        return SKELETON_COIN_IMAGES[setNum]
+    }
+
     function updateActiveCoinUI() {
         coin.forEach(c => {
             const value = Number(c.dataset.value);
@@ -383,8 +394,8 @@ if (gameID === "hogehoge") {
             const idx = Number(coin.dataset.index);
             coin.src = idx <= value
                 ? activeImg
-                : (0 === idx % 20
-                    ? "../img/StackCoins_000-top.png"
+                : (0 === idx % 10
+                    ? getSkeletonCoinImage(idx)
                     : "../img/StackCoins_000.png");
         });
     }
